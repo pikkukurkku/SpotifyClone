@@ -20,6 +20,8 @@ struct SpotifyRecentsCell: View {
                 .font(.callout)
                 .fontWeight(.semibold)
                 .lineLimit(2)
+                .truncationMode(.tail)
+                                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.trailing, 8)
         .themeColors(isSelected: false)
