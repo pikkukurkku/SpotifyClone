@@ -9,14 +9,14 @@ import SwiftUI
 
 struct ImageTitleRowCell: View {
     
-    let imageName: String = Constants.randomImage
-    let title: String = "Some item name nake name name anme "
-    var ImageSize: CGFloat = 100
+    let imageName: String
+    let title: String
+    var imageSize: CGFloat = 100
     
     var body: some View {
         VStack (alignment: .leading, spacing: 8) {
             ImageLoaderView(urlString: imageName)
-                .frame(width: ImageSize, height: ImageSize)
+                .frame(width: imageSize, height: imageSize)
                 
             Text(title)
                 .foregroundStyle(.spotifyLightGray)
@@ -24,14 +24,15 @@ struct ImageTitleRowCell: View {
                 .lineLimit(2)
                 .padding(4)
         }
-        .frame(width: ImageSize)
+        .frame(width: imageSize)
     }
 }
 
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
-        ImageTitleRowCell()
+        ImageTitleRowCell(imageName: Constants.randomImage, title: "some title")
+
     }
 
 }
