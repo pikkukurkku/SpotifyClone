@@ -16,9 +16,26 @@ struct DatabaseHelper {
         }
         
         let (data, _) = try await URLSession.shared.data(from: url)
+        
+        if let jsonString = String(data: data, encoding: .utf8) {
+               print("Raw JSON Response: \(jsonString)")
+           }
+        do {
         let products = try JSONDecoder().decode(ProductArray.self, from: data)
         return products.products
     }
+        catch let DecodingError.keyNotFound(key, context) {
+                    print("❌ Missing Key: \(key.stringValue) - \(context.debugDescription)")
+                } catch let DecodingError.typeMismatch(type, context) {
+                    print("❌ Type Mismatch: \(type) - \(context.debugDescription)")
+                } catch let DecodingError.valueNotFound(type, context) {
+                    print("❌ Value Not Found: \(type) - \(context.debugDescription)")
+                } catch {
+                    print("❌ Other Decoding Error: \(error)")
+                }
+                
+                return []  // ✅ Return an empty array if decoding fails
+            }
     
     
     func getUsers() async throws -> [User] {

@@ -54,15 +54,17 @@ private func getData() async {
         print("Fetched \(products.count) products")
         
         var rows: [ProductRow] = []
-        let allBrands = Set(products.map { $0.brand })
+        let allBrands = Set(products.map { $0.brand ?? "Unknown" })
         for brand in allBrands {
-            let filteredProducts = products.filter { $0.brand == brand }  // 🔥 Filter correctly
+            let filteredProducts = products.filter { $0.brand ?? "Unknown" == brand }
             if !filteredProducts.isEmpty {
-                rows.append(ProductRow(title: brand.capitalized, products: filteredProducts)) // ✅ Use only filtered products
+                rows.append(ProductRow(titleText: brand, products: filteredProducts))
             }
         }
         productRows = rows
-        print("Generated \(productRows.count) product rows") 
+        print("Generated \(productRows.count) product rows")
+        print("Fetched brands:", products.map { $0.brand as Any })  // Print actual values
+
     } catch {
         print("Error fetching data: \(error)")
         }
@@ -118,8 +120,8 @@ private func getData() async {
     private func newReleaseSection(product: Product)   -> some View {
         SpotifyNewReleaseCell(
             imageName: product.firstImage,
-            headline: product.brand,
-            subheadline: product.category,
+            headline: product.brand ?? "Brand Unavailable",
+            subheadline: product.title,
             title: product.title,
             subtitle: product.description,
             onAddToPlaylistPressed: {
@@ -134,7 +136,7 @@ private func getData() async {
     private var listRows: some View {
           ForEach(productRows) { row in
               VStack(spacing: 8) {
-                  Text(row.title)
+                  Text(row.titleText)
                       .font(.title)
                       .fontWeight(.semibold)
                       .foregroundStyle(.spotifyWhite)
