@@ -11,7 +11,8 @@ import SwiftUI
 struct SpotifyCloneApp: App {
     var body: some Scene {
         WindowGroup {
-            SpotifyHomeView()
+           SpotifyHomeView()
+          //  SpotifyPlaylistView()
         }
     }
 }
