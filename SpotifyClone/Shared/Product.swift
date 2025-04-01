@@ -37,6 +37,33 @@ struct Product: Codable, Identifiable {
         images.first ?? Constants.randomImage
     }
     
+    static var mock: Product {
+        Product(
+            id: 123,
+            title: "Example product title",
+            description: "This is some product description that goes here.",
+            category: .beauty,
+            price: 999,
+            discountPercentage: 15,
+            rating: 4.5,
+            stock: 50,
+            tags: ["hu", "ra"],
+            brand: "Apple",
+            sku: "sku",
+            weight: 50,
+            dimensions: Dimensions.mock,
+            warrantyInformation: "info",
+            shippingInformation: "info",
+            availabilityStatus: .inStock,
+            reviews: Review.mock,
+            returnPolicy: .noReturnPolicy,
+            minimumOrderQuantity: 50,
+            meta: Meta.mock,
+            images: [Constants.randomImage, Constants.randomImage, Constants.randomImage ],
+            thumbnail: Constants.randomImage
+        )
+    }
+    
 }
 
 enum AvailabilityStatus: String, Codable {
@@ -54,6 +81,14 @@ enum Category: String, Codable {
 // MARK: - Dimensions
 struct Dimensions: Codable {
     let width, height, depth: Double
+    
+    static var mock: Dimensions {
+         Dimensions(
+             width: 10.5,
+             height: 20.0,
+             depth: 5.0
+         )
+     }
 }
 
 // MARK: - Meta
@@ -61,6 +96,15 @@ struct Meta: Codable {
     let createdAt, updatedAt: CreatedAt
     let barcode: String
     let qrCode: String
+    
+    static var mock: Meta {
+        Meta(
+            createdAt: .the20240523T085621618Z,
+            updatedAt: .the20240523T085621618Z,
+            barcode: "3325493172934",
+            qrCode: "https://assets.dummyjson.com/public/qr-code.png"
+        )
+    }
 }
 
 enum CreatedAt: String, Codable {
@@ -78,12 +122,47 @@ enum ReturnPolicy: String, Codable {
 }
 
 // MARK: - Review
+// MARK: - Review
 struct Review: Codable {
     let rating: Int
     let comment: String
     let date: CreatedAt
     let reviewerName, reviewerEmail: String
+
+    static var mock: [Review] {  // ✅ Now returns an array of reviews
+        [
+            Review(
+                rating: 5,
+                comment: "Amazing product! Exceeded my expectations.",
+                date: .the20240523T085621618Z,
+                reviewerName: "John Doe",
+                reviewerEmail: "john.doe@example.com"
+            ),
+            Review(
+                rating: 5,
+                comment: "Great product!",
+                date: .the20240523T085621620Z,
+                reviewerName: "Elena Baker",
+                reviewerEmail: "elena.baker@x.dummyjson.com"
+            ),
+            Review(
+                rating: 5,
+                comment: "Highly impressed!",
+                date: .the20240523T085621620Z,
+                reviewerName: "Madeline Simpson",
+                reviewerEmail: "madeline.simpson@x.dummyjson.com"
+            ),
+            Review(
+                rating: 5,
+                comment: "Very happy with my purchase!",
+                date: .the20240523T085621620Z,
+                reviewerName: "Caleb Nelson",
+                reviewerEmail: "caleb.nelson@x.dummyjson.com"
+            )
+        ]
+    }
 }
+
 
 //enum Category: String, CaseIterable {
 //    case all, music, podcasts, audiobooks

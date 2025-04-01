@@ -24,7 +24,10 @@ struct ImageTitleRowCell: View {
                 .lineLimit(2)
                 .padding(4)
         }
+        .themeColors(isSelected: false)
+        .cornerRadius(8)
         .frame(width: imageSize)
+
     }
 }
 

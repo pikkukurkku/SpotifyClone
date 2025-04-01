@@ -56,10 +56,10 @@ private func getData() async {
         var rows: [ProductRow] = []
         let allBrands = Set(products.map { $0.brand ?? "Unknown" })
         for brand in allBrands {
-            let filteredProducts = products.filter { $0.brand ?? "Unknown" == brand }
-            if !filteredProducts.isEmpty {
-                rows.append(ProductRow(titleText: brand, products: filteredProducts))
-            }
+     //       let filteredProducts = products.filter { $0.brand ?? "Unknown" == brand }
+      //      if !filteredProducts.isEmpty {
+                rows.append(ProductRow(titleText: brand, products: products))
+    //        }
         }
         productRows = rows
         print("Generated \(productRows.count) product rows")
@@ -113,6 +113,9 @@ private func getData() async {
                     imageName: product.firstImage,
                     title: product.title
                 )
+                .asButton(.press) {
+    
+                }
             }
         }
     }
@@ -144,16 +147,16 @@ private func getData() async {
                       .padding(.horizontal, 16)
 
                   ScrollView(.horizontal) {
-                      HStack(alignment: .top, spacing: 16) {
+                      HStack(alignment: .top, spacing: 8) {
                           ForEach(row.products) { product in
                               ImageTitleRowCell(
                                   imageName: product.firstImage,
                                   title: product.title,
                                   imageSize: 120
                               )
-//                              .asButton(.press) {
-//                                  goToPlaylistView(product: product)
-//                              }
+                              .asButton(.press) {
+                               //  goToPlaylistView(product: product)
+                          }
                           }
                       }
                       .padding(.horizontal, 16)

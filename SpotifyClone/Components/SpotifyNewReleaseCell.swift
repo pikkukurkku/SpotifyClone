@@ -52,10 +52,11 @@ struct SpotifyNewReleaseCell: View {
                         }
                         if let subtitle {
                             Text(subtitle)
-              
+                                .multilineTextAlignment(.leading)
                                 .foregroundStyle(.spotifyLightGray)
                         }
                     }
+                   
                     .font(.callout)
                     
                     HStack(spacing: 0) {
@@ -75,6 +76,7 @@ struct SpotifyNewReleaseCell: View {
                             .font(.title)
                     }
                 }
+                .padding()
                 .padding(.trailing, 16)
             }
             .themeColors(isSelected: false)
@@ -85,6 +87,7 @@ struct SpotifyNewReleaseCell: View {
         }
     }
 }
+
 
 #Preview {
     ZStack {
