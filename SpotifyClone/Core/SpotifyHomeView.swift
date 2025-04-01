@@ -7,8 +7,11 @@
 
 import SwiftUI
 import SwiftfulUI
+import SwiftfulRouting
 
 struct SpotifyHomeView: View {
+    
+    @Environment(\.router) var router
     
     @State private var currentUser: User? = nil
     @State private var selectedCategory: CategoryLabel? = nil
@@ -46,6 +49,7 @@ struct SpotifyHomeView: View {
     }
     
 private func getData() async {
+    guard products.isEmpty else { return }
     do {
         currentUser = try await DatabaseHelper().getUsers().first
         products = try await Array(DatabaseHelper().getProducts().prefix(8))
@@ -56,15 +60,10 @@ private func getData() async {
         var rows: [ProductRow] = []
         let allBrands = Set(products.map { $0.brand ?? "Unknown" })
         for brand in allBrands {
-     //       let filteredProducts = products.filter { $0.brand ?? "Unknown" == brand }
-      //      if !filteredProducts.isEmpty {
+ 
                 rows.append(ProductRow(titleText: brand, products: products))
-    //        }
         }
         productRows = rows
-        print("Generated \(productRows.count) product rows")
-        print("Fetched brands:", products.map { $0.brand as Any })  // Print actual values
-
     } catch {
         print("Error fetching data: \(error)")
         }
@@ -78,7 +77,7 @@ private func getData() async {
                         .background(.spotifyWhite)
                         .clipShape(Circle())
                         .onTapGesture {
-                            // later
+                            router.dismissScreen()
                         }
                 }
             }
@@ -114,9 +113,17 @@ private func getData() async {
                     title: product.title
                 )
                 .asButton(.press) {
-    
+                    goToPlaylistView(product: product)
                 }
             }
+        }
+    }
+    
+    
+    private func goToPlaylistView(product: Product) {
+        guard let currentUser else { return }
+        router.showScreen(.push) { _ in
+            SpotifyPlaylistView(product: product, user: currentUser)
         }
     }
     
@@ -131,7 +138,7 @@ private func getData() async {
                 
             },
             onPlayPressed: {
-                
+                goToPlaylistView(product: product)
             }
         )
     }
@@ -155,7 +162,7 @@ private func getData() async {
                                   imageSize: 120
                               )
                               .asButton(.press) {
-                               //  goToPlaylistView(product: product)
+                                goToPlaylistView(product: product)
                           }
                           }
                       }
@@ -170,5 +177,7 @@ private func getData() async {
 
 
 #Preview {
-    SpotifyHomeView()
+    RouterView { _ in
+        SpotifyHomeView()
+    }
 }
